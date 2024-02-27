@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
  
-// Define schema
+//schema
 const sectionSchema = new mongoose.Schema({
   text: {
     type: String,
@@ -12,7 +12,7 @@ const sectionSchema = new mongoose.Schema({
   },
 });
  
-// Create model
+//model
 const Section = mongoose.model('Section', sectionSchema);
  
 module.exports = Section;

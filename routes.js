@@ -1,13 +1,16 @@
 const express = require('express');
 const Section = require('./models/sectionModel'); 
 const Count = require('./models/countModel'); 
- 
+const ObjectId = require('mongoose').Types.ObjectId; 
 const router = express.Router();
  
 // Create a new section
 router.post('/', async (req, res) => {
   try {
     const { text, section } = req.body;
+    if (!text || !section) {
+      return res.status(400).json({ error: 'Text and section are required' });
+    }
     const newSection = new Section({ text, section });
     await newSection.save();
  
@@ -24,6 +27,9 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid Object ID' });
+    }
     const { text, section } = req.body;
     
     const updatedSection = await Section.findByIdAndUpdate(id, { text, section }, { new: true });
@@ -45,6 +51,9 @@ router.put('/:id', async (req, res) => {
 router.delete('/', async (req, res) => {
   try {
     const {section} = req.body;
+    if (!section) {
+      return res.status(400).json({ error: 'Section is required' });
+    }
     await Section.deleteMany({section});
     res.status(200).json({message:"succesfully deleted"});
   } catch (error) {
